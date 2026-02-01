@@ -10,6 +10,7 @@ services:
     depends_on:
       - banco_tarefas
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       DB_HOST: banco_tarefas
       DB_PORT: 5432
       DB_NAME: ${DB_NAME}

@@ -1,0 +1,225 @@
+/* =========================================
+   1. RESET E FONTES
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #f0f2f5; /* Cor de fundo caso algo falhe */
+}
+
+/* =========================================
+   2. ESTRUTURA PRINCIPAL (SPLIT SCREEN)
+   ========================================= */
+.main-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden; /* Evita barras de rolagem indesejadas */
+}
+
+/* --- LADO ESQUERDO (A IMAGEM) --- */
+.left-side {
+    flex: 1.2; /* Ocupa um pouco mais de metade da tela (60% aprox) */
+    position: relative;
+    
+    /* TRUQUE DO FUNDO:
+       Tenta carregar a imagem. Se falhar (ou não existir), mostra o degradê roxo/azul.
+       O caminho '../img/...' volta da pasta css e entra na pasta img. */
+    background: 
+        linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)), /* Degradê de segurança */
+        url('../img/capa-login.jpg'); /* Tenta a imagem */
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    display: none; /* Em celulares, começa escondido */
+    align-items: flex-end; /* Texto alinhado em baixo */
+    justify-content: flex-start;
+    padding: 80px;
+}
+
+/* O texto sobre a imagem */
+.overlay {
+    z-index: 2;
+    color: white;
+    max-width: 600px;
+    animation: fadeIn 1.5s ease-out; /* Pequena animação de entrada */
+}
+
+.left-side h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.left-side p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* --- LADO DIREITO (O FORMULÁRIO) --- */
+.right-side {
+    flex: 1; /* Ocupa o restante */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 40px;
+    box-shadow: -10px 0 20px rgba(0,0,0,0.05); /* Sombra sutil vindo da direita */
+    z-index: 10;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 420px; /* Largura ideal para leitura */
+    animation: slideUp 0.8s ease-out;
+}
+
+/* =========================================
+   3. TIPOGRAFIA E ELEMENTOS DO FORM
+   ========================================= */
+h2 {
+    color: #333;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 40px;
+    font-size: 1rem;
+}
+
+/* Campos de Input Modernos */
+.input-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-left: 2px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 16px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #2d3748;
+    background-color: #f7fafc;
+    transition: all 0.3s ease;
+}
+
+/* Efeito ao clicar no campo */
+.input-group input:focus {
+    border-color: #667eea; /* Roxo suave */
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15); /* Brilho suave */
+}
+
+.input-group input::placeholder {
+    color: #a0aec0;
+}
+
+/* Botão Principal */
+.btn-login {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(118, 75, 162, 0.2);
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px); /* Levanta levemente */
+    box-shadow: 0 10px 15px rgba(118, 75, 162, 0.3);
+    filter: brightness(1.1);
+}
+
+.btn-login:active {
+    transform: translateY(-1px);
+}
+
+.footer-text {
+    text-align: center;
+    margin-top: 25px;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   4. MENSAGENS DE ERRO E SUCESSO
+   ========================================= */
+.alert {
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+}
+
+.alert.error {
+    background: #fff5f5;
+    color: #c53030;
+    border-left: 5px solid #c53030;
+}
+
+.alert.success {
+    background: #f0fff4;
+    color: #2f855a;
+    border-left: 5px solid #2f855a;
+}
+
+/* =========================================
+   5. RESPONSIVIDADE (CELULARES E TABLETS)
+   ========================================= */
+/* A partir de 900px, mostra a imagem */
+@media (min-width: 900px) {
+    .left-side {
+        display: flex;
+    }
+}
+
+/* Animações simples para dar vida */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Acesso ao Sistema</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="/css/login.css?v=3">
+    
+    <link rel="icon" href="data:,">
+</head>
+<body>
+
+<div class="main-container">
+    
+    <div class="left-side">
+        <div class="overlay">
+            <h1>Gestão<br>Inteligente</h1>
+            <p>Organize as tarefas da família de forma simples, divertida e eficiente.</p>
+        </div>
+    </div>
+
+    <div class="right-side">
+        <div class="login-box">
+            
+            <div class="login-header">
+                <h2>Bem-vindo(a)</h2>
+                <p class="subtitle">Insira os seus dados para continuar</p>
+            </div>
+
+            <div th:if="${param.error}" class="alert error">
+                <span>Usuário ou senha inválidos.</span>
+            </div>
+
+            <div th:if="${param.logout}" class="alert success">
+                <span>Você saiu com segurança.</span>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="input-group">
+                    <label>Usuário</label>
+                    <input type="text" name="username" placeholder="Seu usuário" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Senha</label>
+                    <input type="password" name="password" placeholder="Sua senha" required>
+                </div>
+
+                <button type="submit" class="btn-login">ENTRAR</button>
+            </form>
+            
+            <p class="footer-text">Projeto Tarefas Filhas &copy; 2026</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

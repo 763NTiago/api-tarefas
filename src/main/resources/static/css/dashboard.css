@@ -1,0 +1,136 @@
+/* =========================================
+   DASHBOARD STYLES
+   ========================================= */
+
+/* Variáveis de Cores (Baseado no teu Login) */
+:root {
+    --primary-gradient: linear-gradient(180deg, #764ba2 0%, #667eea 100%);
+    --bg-light: #f8f9fa;
+    --text-dark: #2d3748;
+    --purple-main: #764ba2;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+/* --- BARRA LATERAL (SIDEBAR) --- */
+.sidebar {
+    min-height: 100vh;
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+}
+
+.brand-title {
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar nav a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    padding: 12px 15px;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar nav a:hover {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    transform: translateX(5px);
+}
+
+.sidebar nav a.active {
+    background: white;
+    color: var(--purple-main);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-logout {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-logout:hover {
+    background: #e53e3e;
+    border-color: #e53e3e;
+    color: white !important;
+}
+
+/* --- CARDS E CONTEÚDO --- */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    background: white;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card-title {
+    color: var(--purple-main);
+    font-weight: 700;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+/* --- FORMULÁRIOS --- */
+.form-control, .form-select {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--purple-main);
+    box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.15);
+}
+
+.btn-primary-custom {
+    background: var(--purple-main);
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-primary-custom:hover {
+    background: #5b3a7d;
+    transform: translateY(-2px);
+}
+
+/* --- TABELA --- */
+.table thead th {
+    background-color: #f1f5f9;
+    color: #64748b;
+    font-weight: 600;
+    border: none;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.badge-custom {
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.bg-role-admin { background-color: #ffe2e5; color: #f64e60; }
+.bg-role-user { background-color: #e8fff3; color: #50cd89; }
