@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # --- 1. A API ---
   api_tarefas:
     build: .
     container_name: api_MK_app
@@ -20,7 +21,7 @@ services:
       ADMIN_SENHA: ${ADMIN_SENHA}
 
   # --- 2. O BANCO DE DADOS ---
-  banco_tarefas:
+  banco_MK:
     image: postgres:15-alpine
     container_name: postgres_tarefas
     restart: always
