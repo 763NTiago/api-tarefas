@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-Em_Desenvolvimento-orange)
 ![Java](https://img.shields.io/badge/Java-17-red?logo=java)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2-green?logo=spring)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.2-green?logo=spring)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue?logo=docker)
 
 > **O cérebro do sistema Tarefas Kids.** Esta API gerencia usuários, autenticação e o fluxo de tarefas para o aplicativo móvel e o painel administrativo web.
