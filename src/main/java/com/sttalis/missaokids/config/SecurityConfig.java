@@ -17,14 +17,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
-                .csrf(csrf -> csrf.disable())
-
+                .csrf(csrf -> csrf.disable()) // <--- IMPORTANTE: Desativa proteção que bloqueia o Android
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico").permitAll()
-                        .requestMatchers("/api/login").permitAll()
-
+                        .requestMatchers("/api/login").permitAll() // Libera a API
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

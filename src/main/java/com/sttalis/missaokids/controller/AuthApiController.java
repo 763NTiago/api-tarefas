@@ -1,47 +1,42 @@
 package com.sttalis.missaokids.controller;
 
-import com.sttalis.missaokids.dto.UsuarioResponse;
+import com.sttalis.missaokids.dto.LoginRequest;
 import com.sttalis.missaokids.entity.Usuario;
 import com.sttalis.missaokids.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class AuthApiController {
 
-    private final UsuarioRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    public AuthApiController(UsuarioRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    public record LoginRequest(String login, String senha) {}
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> fazerLogin(@RequestBody LoginRequest request) {
-        Optional<Usuario> usuarioOpt = repository.findByLogin(request.login());
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        System.out.println(">>> API: Recebi login para: " + request.getLogin());
 
-        if (usuarioOpt.isPresent()) {
-            Usuario usuario = usuarioOpt.get();
-            if (passwordEncoder.matches(request.senha(), usuario.getSenha())) {
-                UsuarioResponse response = new UsuarioResponse(
-                        usuario.getId(),
-                        usuario.getLogin(),
-                        usuario.getPerfil()
-                );
-                return ResponseEntity.ok(response);
+        Usuario usuario = usuarioRepository.findByLogin(request.getLogin()).orElse(null);
+
+        if (usuario != null) {
+            System.out.println(">>> API: Usuário encontrado. Verificando senha...");
+            if (passwordEncoder.matches(request.getSenha(), usuario.getSenha())) {
+                System.out.println(">>> API: Senha OK! Logado com sucesso.");
+                return ResponseEntity.ok(usuario);
+            } else {
+                System.out.println(">>> API: Senha incorreta.");
             }
+        } else {
+            System.out.println(">>> API: Usuário não existe.");
         }
 
-        return ResponseEntity.status(401).body("Usuário ou senha inválidos");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos");
     }
 }
