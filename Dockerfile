@@ -9,7 +9,7 @@ COPY src ./src
 
 RUN mvn clean package -DsKipTests
 
-FRON openjdk:17-jdk-alpine
+FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
