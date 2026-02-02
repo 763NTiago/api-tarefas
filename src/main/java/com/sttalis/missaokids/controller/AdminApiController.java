@@ -112,4 +112,16 @@ public class AdminApiController {
         List<Tarefa> tarefas = tarefaRepository.findByFamiliaId(filho.getFamiliaId());
         return ResponseEntity.ok(tarefas);
     }
+
+    @GetMapping("/recompensas/{filhoId}")
+    public ResponseEntity<?> listarRecompensasPorFilho(@PathVariable Long filhoId) {
+        Usuario filho = usuarioRepository.findById(filhoId).orElse(null);
+
+        if (filho == null || filho.getFamiliaId() == null) {
+            return ResponseEntity.badRequest().body("Filho ou família não encontrados");
+        }
+
+        List<Recompensa> recompensas = recompensaRepository.findByFamiliaId(filho.getFamiliaId());
+        return ResponseEntity.ok(recompensas);
+    }
 }
