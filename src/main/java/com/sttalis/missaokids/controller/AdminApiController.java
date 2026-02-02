@@ -30,11 +30,13 @@ public class AdminApiController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // --- ROTA 1: CADASTRAR FILHO ---
     @PostMapping("/filhos")
     public ResponseEntity<?> adicionarFilho(@RequestBody FilhoRequest request) {
         Usuario pai = usuarioRepository.findById(request.getPaiId()).orElse(null);
         if (pai == null) return ResponseEntity.badRequest().body("Pai não encontrado");
 
+        // Cria família se não existir
         if (pai.getFamiliaId() == null || pai.getFamiliaId().isEmpty()) {
             pai.setFamiliaId(UUID.randomUUID().toString());
             usuarioRepository.save(pai);
@@ -50,12 +52,13 @@ public class AdminApiController {
         filho.setSenha(passwordEncoder.encode(request.getSenha()));
         filho.setPerfil("ROLE_CRIANCA");
         filho.setFamiliaId(pai.getFamiliaId());
-        filho.setFotoBase64(request.getFotoBase64()); 
+        filho.setFotoBase64(request.getFotoBase64());
 
         usuarioRepository.save(filho);
         return ResponseEntity.ok("Filho cadastrado com sucesso!");
     }
 
+    // --- ROTA 2: CADASTRAR TAREFA ---
     @PostMapping("/tarefas")
     public ResponseEntity<?> adicionarTarefa(@RequestBody TarefaRequest request) {
         Usuario pai = usuarioRepository.findById(request.getPaiId()).orElse(null);
@@ -69,14 +72,17 @@ public class AdminApiController {
         Tarefa tarefa = new Tarefa();
         tarefa.setTitulo(request.getTitulo());
         tarefa.setValorEstrelas(request.getValorEstrelas());
-        tarefa.setImagemBase64(request.getImagemBase64());
         tarefa.setFamiliaId(pai.getFamiliaId());
-        tarefa.setAtribuidaParaId(request.getAtribuidaParaId());
+
+        if (request.getAtribuidaParaId() != null) {
+            tarefa.setAtribuidaParaId(request.getAtribuidaParaId());
+        }
 
         tarefaRepository.save(tarefa);
         return ResponseEntity.ok("Tarefa criada com sucesso!");
     }
 
+    // --- ROTA 3: CADASTRAR RECOMPENSA ---
     @PostMapping("/recompensas")
     public ResponseEntity<?> adicionarRecompensa(@RequestBody RecompensaRequest request) {
         Usuario pai = usuarioRepository.findById(request.getPaiId()).orElse(null);
@@ -91,6 +97,7 @@ public class AdminApiController {
         return ResponseEntity.ok("Recompensa criada com sucesso!");
     }
 
+    // --- ROTA 4: LISTAR FILHOS ---
     @GetMapping("/filhos/{paiId}")
     public ResponseEntity<?> listarFilhos(@PathVariable Long paiId) {
         Usuario pai = usuarioRepository.findById(paiId).orElse(null);
