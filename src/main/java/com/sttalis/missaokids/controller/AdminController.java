@@ -1,5 +1,7 @@
 package com.sttalis.missaokids.controller;
 
+import com.sttalis.missaokids.entity.Usuario;
+import com.sttalis.missaokids.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sttalis.missaokids.entity.Usuario;
-import com.sttalis.missaokids.repository.UsuarioRepository;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
@@ -32,15 +33,21 @@ public class AdminController {
     @PostMapping("/cadastrar")
     public String cadastrar(Usuario usuario) {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        
+
         if (usuario.getPerfil() == null || usuario.getPerfil().isEmpty()) {
-            usuario.setPerfil("ROLE_RESPONSAVEL");
+            usuario.setPerfil("ROLE_ADMIN");
         }
-        
-        usuario.setResponsavel(null);
+
+        if (usuario.getNomeExibicao() == null || usuario.getNomeExibicao().isEmpty()) {
+            usuario.setNomeExibicao(usuario.getLogin());
+        }
+
+        if (usuario.getFamiliaId() == null || usuario.getFamiliaId().isEmpty()) {
+            usuario.setFamiliaId(UUID.randomUUID().toString());
+        }
 
         usuarioRepository.save(usuario);
-        return "redirect:/admin"; 
+        return "redirect:/admin";
     }
 
     @GetMapping("/excluir/{id}")

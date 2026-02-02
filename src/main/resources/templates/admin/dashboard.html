@@ -4,7 +4,7 @@
     <title>Painel Admin - Tarefas Kids</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
@@ -13,18 +13,18 @@
 
 <div class="container-fluid">
     <div class="row">
-        
+
         <div class="col-md-2 sidebar p-4 d-flex flex-column">
             <div class="brand-title">
                 <i class="fas fa-gamepad fa-lg me-2"></i> TarefasKids
             </div>
-            
+
             <nav class="flex-grow-1">
                 <a href="/admin" class="active">
                     <i class="fas fa-users me-2"></i> Famílias
                 </a>
                 <a href="#">
-                    <i class="fas fa-star me-2"></i> Tarefas (Em breve)
+                    <i class="fas fa-star me-2"></i> Tarefas
                 </a>
                 <a href="#">
                     <i class="fas fa-chart-pie me-2"></i> Relatórios
@@ -43,14 +43,22 @@
             <h2 class="mb-4 fw-bold" style="color: #4a5568;">Gestão de Famílias</h2>
 
             <div class="row">
-                
+
                 <div class="col-md-4 mb-4">
                     <div class="card p-4 h-100">
                         <h5 class="card-title"><i class="fas fa-user-plus me-2"></i>Novo Cadastro</h5>
                         <p class="text-muted small mb-4">Adicione um pai, mãe ou administrador.</p>
-                        
+
                         <form th:action="@{/admin/cadastrar}" method="post">
-                            
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted fw-bold small">Nome Completo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-id-card"></i></span>
+                                    <input type="text" name="nomeExibicao" class="form-control" placeholder="Ex: João da Silva">
+                                </div>
+                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label text-muted fw-bold small">Login de Acesso</label>
                                 <div class="input-group">
@@ -70,8 +78,8 @@
                             <div class="mb-4">
                                 <label class="form-label text-muted fw-bold small">Tipo de Perfil</label>
                                 <select name="perfil" class="form-select">
-                                    <option value="ROLE_RESPONSAVEL" selected>👨‍👩‍👧 Responsável (Pai/Mãe)</option>
-                                    <option value="ROLE_ADMIN">🛡️ Administrador</option>
+                                    <option value="ROLE_ADMIN" selected>👨‍👩‍👧 Responsável (Cria Família)</option>
+                                    <option value="ROLE_SUPER_ADMIN">🛡️ Super Administrador</option>
                                 </select>
                             </div>
 
@@ -94,63 +102,70 @@
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="table-light">
-                                    <tr>
-                                        <th class="ps-3">ID</th>
-                                        <th>Usuário</th>
-                                        <th>Perfil</th>
-                                        <th class="text-end pe-3">Ações</th>
-                                    </tr>
+                                <tr>
+                                    <th class="ps-3">ID</th>
+                                    <th>Usuário</th>
+                                    <th>Perfil</th>
+                                    <th class="text-end pe-3">Ações</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="u : ${usuarios}">
-                                        <td class="ps-3 text-muted fw-bold" th:text="'#' + ${u.id}">#1</td>
-                                        
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-3" 
-                                                     style="width:40px; height:40px; color: #764ba2;">
-                                                    <i class="fas fa-user"></i>
-                                                </div>
-                                                <div>
-                                                    <div th:text="${u.login}" class="fw-bold text-dark">Nome</div>
-                                                    <div class="small text-muted">Cadastrado no sistema</div>
-                                                </div>
+                                <tr th:each="u : ${usuarios}">
+                                    <td class="ps-3 text-muted fw-bold" th:text="'#' + ${u.id}">#1</td>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-3"
+                                                 style="width:40px; height:40px; color: #764ba2;">
+                                                <i class="fas fa-user"></i>
                                             </div>
-                                        </td>
-                                        
-                                        <td>
-                                            <span th:if="${u.perfil == 'ROLE_ADMIN'}" 
+                                            <div>
+                                                <div th:text="${u.nomeExibicao} ?: ${u.login}" class="fw-bold text-dark">Nome</div>
+                                                <div class="small text-muted" th:text="${u.login}">Login</div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                            <span th:if="${u.perfil == 'ROLE_SUPER_ADMIN'}"
                                                   class="badge-custom bg-role-admin">
-                                                  <i class="fas fa-shield-alt me-1"></i> ADMIN
+                                                  <i class="fas fa-shield-alt me-1"></i> SUPER
                                             </span>
-                                            <span th:if="${u.perfil == 'ROLE_RESPONSAVEL'}" 
-                                                  class="badge-custom bg-role-user">
-                                                  <i class="fas fa-user-friends me-1"></i> FAMÍLIA
+                                        <span th:if="${u.perfil == 'ROLE_ADMIN'}"
+                                              class="badge-custom bg-role-user">
+                                                  <i class="fas fa-house-user me-1"></i> FAMÍLIA
                                             </span>
-                                        </td>
-                                        
-                                        <td class="text-end pe-3">
-                                            <a th:href="@{/admin/excluir/{id}(id=${u.id})}" 
-                                               class="btn btn-sm btn-outline-danger border-0" 
-                                               title="Excluir Usuário"
-                                               onclick="return confirm('Tem certeza que deseja remover este usuário? Essa ação não pode ser desfeita.')">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    
-                                    <tr th:if="${usuarios.empty}">
-                                        <td colspan="4" class="text-center p-4 text-muted">
-                                            Nenhum usuário encontrado. Cadastre o primeiro ao lado!
-                                        </td>
-                                    </tr>
+                                        <span th:if="${u.perfil == 'ROLE_CRIANCA'}"
+                                              class="badge-custom bg-info text-white">
+                                                  <i class="fas fa-child me-1"></i> FILHO
+                                            </span>
+                                    </td>
+
+                                    <td class="text-end pe-3">
+                                        <a th:href="@{/admin/excluir/{id}(id=${u.id})}"
+                                           class="btn btn-sm btn-outline-danger border-0"
+                                           title="Excluir Usuário"
+                                           onclick="return confirm('Tem certeza que deseja remover este usuário? Essa ação não pode ser desfeita.')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr th:if="${#lists.isEmpty(usuarios)}">
+                                    <td colspan="4" class="text-center p-4 text-muted">
+                                        Nenhum usuário encontrado. Cadastre o primeiro ao lado!
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                
-            </div> </div> </div> </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
