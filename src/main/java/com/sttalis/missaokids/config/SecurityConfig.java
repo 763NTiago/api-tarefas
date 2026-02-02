@@ -1,5 +1,7 @@
 package com.sttalis.missaokids.config;
 
+import com.sttalis.missaokids.service.AutenticacaoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,18 +16,24 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+
+    @Autowired
+    private AutenticacaoService autenticacaoService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico").permitAll()
                         .requestMatchers("/api/**").permitAll()
-                        .anyRequest().permitAll()
+
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/admin/dashboard", true)
+                        .loginPage("/login") // Sua página de login personalizada
+                        .defaultSuccessUrl("/admin", true) // Redireciona para admin ao logar
                         .permitAll()
                 )
                 .logout(logout -> logout
