@@ -124,4 +124,13 @@ public class AdminApiController {
         List<Recompensa> recompensas = recompensaRepository.findByFamiliaId(filho.getFamiliaId());
         return ResponseEntity.ok(recompensas);
     }
+
+    @GetMapping("/familia/{familiaId}")
+    public ResponseEntity<?> listarMembrosFamilia(@PathVariable String familiaId) {
+        if (familiaId == null || familiaId.isEmpty()) {
+            return ResponseEntity.badRequest().body("ID da família inválido");
+        }
+        List<Usuario> membros = usuarioRepository.findByFamiliaId(familiaId);
+        return ResponseEntity.ok(membros);
+    }
 }
